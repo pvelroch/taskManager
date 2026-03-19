@@ -39,14 +39,14 @@ from openai import OpenAI
 
 load_dotenv()  # Load environment variables from .env file
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 def create_simple_task(description):
+    api_key = os.getenv("OPENAI_API_KEY")
 
-    if not client.api_key:
+    if not api_key:
         return ["OpenAI API key is not set. Please set it in the .env file."]
 
     try:
+        client = OpenAI(api_key=api_key)
         prompt = f"""Desglosa la siguiente tarea completa en una lista de 3 a 5 subtareas simples y accionables.
 
         Tarea: {description}
@@ -64,7 +64,7 @@ def create_simple_task(description):
                 {"role": "system", "content": "Eres un asistente útil que desglosa tareas complejas en subtareas simples."},
                 {"role": "user", "content": prompt}
             ],
-            "max_completions_tokens": 300,
+            "max_completion_tokens": 300,
             "verbosity": "medium",
             "reasoning_effort": "minimal"
         }
